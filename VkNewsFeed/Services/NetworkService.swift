@@ -25,7 +25,7 @@ final class NetworkService: Networking {
         var allParams = params
         allParams["access_token"] = token
         allParams["v"] = API.version
-        let url = self.url(from: API.newsFeed, params: params)
+        let url = self.url(from: API.newsFeed, params: allParams)
         
         let request = URLRequest(url: url)
         let task = self.createDataTask(from: request, completion: completion)
@@ -38,10 +38,6 @@ final class NetworkService: Networking {
                 completion(data, error)
             }
         }
-    }
-    
-    func getFeed() {
-
     }
     
     private func url(from path: String, params: [String : String]) -> URL {

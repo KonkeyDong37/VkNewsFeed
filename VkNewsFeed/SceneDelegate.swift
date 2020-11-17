@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, AuthServiceDelegate {
 
     static func shared() -> SceneDelegate {
         let scene = UIApplication.shared.connectedScenes.first
-        let sd: SceneDelegate = (((scene?.delegate as? SceneDelegate)!))
+        let sd: SceneDelegate = (scene?.delegate as? SceneDelegate)!
         return sd
     }
 
@@ -74,7 +74,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, AuthServiceDelegate {
     }
     
     func authServiceSignIn() {
-        let feedVC = UIStoryboard(name: "FeedViewController", bundle: nil).instantiateInitialViewController() as! FeedViewController
+        let feedVC = UIStoryboard(name: "NewsFeedViewController", bundle: nil).instantiateInitialViewController() as! NewsFeedViewController
         let navVC = UINavigationController(rootViewController: feedVC)
         window?.rootViewController = navVC
     }
