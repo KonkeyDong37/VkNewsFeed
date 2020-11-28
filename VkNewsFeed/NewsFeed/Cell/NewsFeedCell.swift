@@ -16,7 +16,7 @@ protocol NewsFeedCellViewModel {
     var comments: String? { get }
     var shares: String? { get }
     var views: String? { get }
-    var photoAttachment: FeedCellPhotoAttachmentViewModel? { get }
+    var photoAttachments: [FeedCellPhotoAttachmentViewModel] { get }
     var sizes: FeedCellSizes { get }
 }
 
@@ -31,6 +31,7 @@ protocol FeedCellSizes {
     var attachmentFrame: CGRect { get }
     var footerViewFrame: CGRect { get }
     var totalHeight: CGFloat { get }
+    var moreTextButtonFrame: CGRect { get }
 }
 
 class NewsFeedCell: UITableViewCell {
@@ -67,24 +68,24 @@ class NewsFeedCell: UITableViewCell {
         selectionStyle = .none
     }
     
-    func set(viewModel: NewsFeedCellViewModel) {
-        iconImageLabel.set(imageUrl: viewModel.iconUrlString)
-        nameLabel.text = viewModel.name
-        dateLabel.text = viewModel.date
-        postLabel.text = viewModel.text
-        likesLabel.text = viewModel.likes
-        commentsLabel.text = viewModel.comments
-        sharesLabel.text = viewModel.shares
-        viewsLabel.text = viewModel.views
-        postLabel.frame = viewModel.sizes.postLabelFrame
-        postImageView.frame = viewModel.sizes.attachmentFrame
-        footerView.frame = viewModel.sizes.footerViewFrame
-        
-        if let photo = viewModel.photoAttachment {
-            postImageView.set(imageUrl: photo.url)
-            postImageView.isHidden = false
-        } else {
-            postImageView.isHidden = true
-        }
-    }
+//    func set(viewModel: NewsFeedCellViewModel) {
+//        iconImageLabel.set(imageUrl: viewModel.iconUrlString)
+//        nameLabel.text = viewModel.name
+//        dateLabel.text = viewModel.date
+//        postLabel.text = viewModel.text
+//        likesLabel.text = viewModel.likes
+//        commentsLabel.text = viewModel.comments
+//        sharesLabel.text = viewModel.shares
+//        viewsLabel.text = viewModel.views
+//        postLabel.frame = viewModel.sizes.postLabelFrame
+//        postImageView.frame = viewModel.sizes.attachmentFrame
+//        footerView.frame = viewModel.sizes.footerViewFrame
+//        
+//        if let photo = viewModel.photoAttachments {
+//            postImageView.set(imageUrl: photo.url)
+//            postImageView.isHidden = false
+//        } else {
+//            postImageView.isHidden = true
+//        }
+//    }
 }

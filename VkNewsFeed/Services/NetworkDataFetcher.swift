@@ -8,21 +8,38 @@
 import Foundation
 
 protocol DataFetcher {
-    func getFeed(response: @escaping (FeedResponse?) -> Void)
+    func getFeed(nextBatchFrom: String?, response: @escaping (FeedResponse?) -> Void)
+    func getUser(response: @escaping (UserResponse?) -> Void)
 }
 
 struct NetworkDataFetcher: DataFetcher {
-    
+
+    private let authService: AuthService
     let networking: Networking
     
-    init(networking: Networking) {
+    init(networking: Networking, authService: AuthService = SceneDelegate.shared().authService) {
         self.networking = networking
+        self.authService = authService
     }
     
-    func getFeed(response: @escaping (FeedResponse?) -> Void) {
+    func getUser(response: @escaping (UserResponse?) -> Void) {
+        guard let userId = authService.userId else { return }
+        let params = ["iser_ids": userId, "fields": "photo_100"]
+        networking.request(path: API.user, params: params) { (data, error) in
+            if let error = error {
+                print("Error received request data: \(error.localizedDescription)")
+                response(nil)
+            }
+            
+            let decoded = self.decodeJSON(type: UserResponseWrapped.self, from: data)
+            response(decoded?.response.first)
+        }
+    }
+    
+    func getFeed(nextBatchFrom: String?,  response: @escaping (FeedResponse?) -> Void) {
         
-        let params = ["filters": "post,photos"]
-        
+        var params = ["filters": "post,photos"]
+        params["start_from"] = nextBatchFrom
         networking.request(path: API.newsFeed, params: params) { (data, error) in
             if let error = error {
                 print("Error received request data: \(error.localizedDescription)")

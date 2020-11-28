@@ -9,7 +9,7 @@ import Foundation
 import VKSdkFramework
 
 protocol AuthServiceDelegate: class {
-    func authServiceSholdShow(viewController: UIViewController)
+    func authServiceSholdShow(_ viewController: UIViewController)
     func authServiceSignIn()
     func authServiceSignInDidFail()
 }
@@ -25,6 +25,10 @@ class AuthService: NSObject, VKSdkDelegate, VKSdkUIDelegate {
         return VKSdk.accessToken()?.accessToken
     }
     
+    var userId: String? {
+        return VKSdk.accessToken()?.userId
+    }
+    
     override init() {
         vkSdk = VKSdk.initialize(withAppId: appId)
         super.init()
@@ -36,14 +40,13 @@ class AuthService: NSObject, VKSdkDelegate, VKSdkUIDelegate {
         let scope = ["offline", "wall", "friends"]
 
         VKSdk.wakeUpSession(scope) { [delegate] (state, error) in
-
             switch state {
-            case .initialized:
-                print("init")
-                VKSdk.authorize(scope)
             case .authorized:
                 print("auth")
                 delegate?.authServiceSignIn()
+            case .initialized:
+                print("init")
+                VKSdk.authorize(scope)
             default:
                 delegate?.authServiceSignInDidFail()
                 
@@ -62,7 +65,7 @@ class AuthService: NSObject, VKSdkDelegate, VKSdkUIDelegate {
     }
     
     func vkSdkShouldPresent(_ controller: UIViewController!) {
-        delegate?.authServiceSholdShow(viewController: controller)
+        delegate?.authServiceSholdShow(controller)
     }
     
     func vkSdkNeedCaptchaEnter(_ captchaError: VKError!) {
