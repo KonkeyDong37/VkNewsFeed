@@ -32,14 +32,6 @@ final class NewsFeedCodeCell: UITableViewCell {
         return view
     }()
     
-//    let postLabel: UILabel = {
-//        let label = UILabel()
-//        label.numberOfLines = 0
-//        label.font = Constants.postLabelFont
-//        label.textColor = Constants.mainTextColor
-//        return label
-//    }()
-    
     let postLabel: UITextView = {
         let textView = UITextView()
         textView.font = Constants.postLabelFont
@@ -48,6 +40,8 @@ final class NewsFeedCodeCell: UITableViewCell {
         textView.isUserInteractionEnabled = true
         textView.isEditable = false
         textView.dataDetectorTypes = .all
+        textView.backgroundColor = .white
+        textView.textColor = .black
         
         let padding = textView.textContainer.lineFragmentPadding
         textView.textContainerInset = UIEdgeInsets(top: 0, left: -padding, bottom: 0, right: -padding)
